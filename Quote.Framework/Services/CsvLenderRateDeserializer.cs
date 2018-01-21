@@ -37,7 +37,15 @@ namespace Quote.Framework
 
                     return result;
                 }
-                catch (Exception ex)
+                catch (CsvHelper.MissingFieldException)
+                {
+                    throw new Quote.Common.ValidationException("CSV File headers are incorrect. Please make sure you have three headers with names 'Lender', 'Rate' and 'Available'.");
+                }
+                catch (CsvHelper.TypeConversion.TypeConverterException ex)
+                {
+                    throw new Quote.Common.ValidationException($"The data '{ex.Text}' you specified in CSV file is not correct type.");
+                }
+                catch (CsvHelperException ex)
                 {
                     throw new Quote.Common.ValidationException(ex.Message);
                 }

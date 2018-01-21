@@ -7,17 +7,18 @@ using Quote.Framework;
 namespace IntegrationTests
 {
     [TestClass]
-    public class CsvLenderDataReaderTests
+    public class CsvLenderDataReaderIntegrationTests
     {
         [TestMethod]
-        [DataRow("LenderData.csv")]
-        public async Task Read_COntent_From_File(string filePath)
+        [DataRow("OneLender.csv", 1)]
+        [DataRow("LenderData.csv", 7)]
+        [DataRow("BigData.csv", 499)]
+        public async Task Read_COntent_From_File(string filePath, int expected)
         {
             var dataProvider = new LenderRawRateProviderFromFile(filePath);
 
             var loanData = await new CsvLenderRateDeserializer(dataProvider).Deserialize();
 
-            var expected = 7;
 
             var actual = loanData.Count();
 

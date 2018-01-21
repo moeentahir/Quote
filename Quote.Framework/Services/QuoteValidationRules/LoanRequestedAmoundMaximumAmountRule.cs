@@ -1,14 +1,8 @@
 ﻿using Quote.Common;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Quote.Framework
 {
-    public class LoanRequestMaximumAmountRule : ILoanRequestValidationRule
+    public class LoanRequestedAmoundMaximumAmountRule : ILoanRequestedAmountValidationRule
     {
         public void Validate(int requestedAmount)
         {

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quote.Common;
 using Quote.Framework;
+using Tests.Common;
 
 namespace UnitTests
 {
@@ -17,16 +18,16 @@ namespace UnitTests
         [DataRow(1600)]
         public void Amount_Should_Be_Multiple_Of_Hundred(int amount)
         {
-            new LoanRequestMultipleOfHundredRule().Validate(amount);
+            new LoanRequestedAmountMultipleOfHundredRule().Validate(amount);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Loan amound should be multiple of 100.")]
         [DataRow(101)]
         [DataRow(1020)]
         public void Not_Multiple_Of_Hundreds_SHould_Throw_Exception(int amount)
         {
-            new LoanRequestMultipleOfHundredRule().Validate(amount);
+            new LoanRequestedAmountMultipleOfHundredRule().Validate(amount);
         }
     }
 }

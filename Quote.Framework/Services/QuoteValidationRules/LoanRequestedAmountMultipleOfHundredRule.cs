@@ -1,13 +1,8 @@
 ﻿using Quote.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Quote.Framework
 {
-    public class LoanRequestMultipleOfHundredRule : ILoanRequestValidationRule
+    public class LoanRequestedAmountMultipleOfHundredRule : ILoanRequestedAmountValidationRule
     {
         public void Validate(int requestedAmount)
         {

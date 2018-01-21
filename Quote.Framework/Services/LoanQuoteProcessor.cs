@@ -10,16 +10,18 @@ namespace Quote.Framework
     public class LoanQuoteProcessor
     {
         private const int NumberOfMonthsLoanFor = 36;
+        private const int CompoundsPerYear = 12;
+        private const int MonthsPerYear = 12;
 
-        ILoanRequestValidator Validator { get; }
-        ILenderRateDeserializer LenderRatesSerializer { get; }
+        ILoanRequestedAmountValidator Validator { get; }
+        ILenderRateDeserializer LenderRatesDeserializer { get; }
         public IInterestCalculator InterestCalculator { get; }
         int LoanRequested { get; }
 
-        public LoanQuoteProcessor(ILoanRequestValidator validator, ILenderRateDeserializer lenderRatesSerializer, IInterestCalculator interestCalculator, int loanAmount)
+        public LoanQuoteProcessor(ILoanRequestedAmountValidator validator, ILenderRateDeserializer lenderRatesDeserializer, IInterestCalculator interestCalculator, int loanAmount)
         {
             Validator = validator;
-            LenderRatesSerializer = lenderRatesSerializer;
+            LenderRatesDeserializer = lenderRatesDeserializer;
             InterestCalculator = interestCalculator;
             LoanRequested = loanAmount;
         }
@@ -28,22 +30,22 @@ namespace Quote.Framework
         {
             Validator.Validate(LoanRequested);
 
-            //Step 1: Get all rates 
-            var lenderRates = await LenderRatesSerializer.Deserialize();
-
+            //Step 1: Get all lender rates 
+            var lenderRates = await LenderRatesDeserializer.Deserialize();
 
             // STep 2: Create breakdown of what amount could be lended from what Lender
-            var breakdown = CreateBreakDown(lenderRates);
+            var breakdown = CreateLoanAmountBreakDown(lenderRates);
 
+            // Step 3: Calculate weighted average of lender rates
             decimal weightedAverageRate = CalculateWeightedAverage(breakdown);
 
             //Step 4: Calculate Interest
             var totalPayable = InterestCalculator.Calculate(new InterestCalculationParameters
             {
-                CompoundsPerYear = 12,
-                PrincipalAmount = this.LoanRequested,
+                CompoundsPerYear = CompoundsPerYear,
+                PrincipalAmount = LoanRequested,
                 Rate = weightedAverageRate,
-                YearsBorrowed = NumberOfMonthsLoanFor / 12
+                YearsBorrowed = NumberOfMonthsLoanFor / MonthsPerYear
             });
 
             return new LoanQuote
@@ -55,7 +57,7 @@ namespace Quote.Framework
             };
         }
 
-        internal decimal CalculateWeightedAverage(IEnumerable<LoanBreakDown> breakdown)
+        internal decimal CalculateWeightedAverage(IEnumerable<LoanAmountBreakDown> breakdown)
         {
             var weightedSum = breakdown.Sum(b => b.Amount * b.Rate);
             var amountSum = breakdown.Sum(b => b.Amount);
@@ -66,23 +68,26 @@ namespace Quote.Framework
         /// <summary>
         /// Creates breakdown of what amount could be lended from what Lender
         /// </summary>
-        internal IEnumerable<LoanBreakDown> CreateBreakDown(IEnumerable<LenderRate> lenderRates)
+        internal IEnumerable<LoanAmountBreakDown> CreateLoanAmountBreakDown(IEnumerable<LenderRate> lenderRates)
         {
             var maximumLoanAvailable = lenderRates.Sum(r => r.Available);
+            maximumLoanAvailable = Math.Floor(maximumLoanAvailable / 100.0M) * 100;
             if (maximumLoanAvailable < this.LoanRequested)
                 throw new ValidationException($"Cannot give quote for the loan amount you requested. The maximum loan you can request is {maximumLoanAvailable}.");
 
+            // Step 1: Sort lender rates fo find the cheapest first
             lenderRates = lenderRates.OrderBy(r => r.Rate);
 
-            var result = new List<LoanBreakDown>();
+            var result = new List<LoanAmountBreakDown>();
             decimal loanAmountLeft = LoanRequested;
 
+            // Step 2: Build loan amount breakdown
             foreach (var data in lenderRates)
             {
                 if (loanAmountLeft <= 0) break;
 
                 var loanFromCurrentLender = Math.Min(loanAmountLeft, data.Available);
-                result.Add(new LoanBreakDown
+                result.Add(new LoanAmountBreakDown
                 {
                     Amount = loanFromCurrentLender,
                     Rate = data.Rate

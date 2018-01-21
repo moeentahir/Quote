@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quote.Common;
 using Quote.Framework;
+using Tests.Common;
 
 namespace UnitTests
 {
@@ -11,7 +12,7 @@ namespace UnitTests
     {
         [TestMethod]
         [DataRow("asd.csv")]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "The file path 'asd.csv' does not exist")]
         public async Task When_File_Does_Not_Exist(string filePath)
         {
             var fileData = await new LenderRawRateProviderFromFile(filePath).Read();

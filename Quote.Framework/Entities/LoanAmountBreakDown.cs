@@ -1,6 +1,6 @@
 ﻿namespace Quote.Framework
 {
-    internal class LoanBreakDown
+    internal class LoanAmountBreakDown
     {
         public decimal Amount { get; set; }
 

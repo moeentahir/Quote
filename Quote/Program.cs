@@ -19,17 +19,18 @@ namespace Quote
         {
             try
             {
+                // Step 1: Validate and build command line arguments
                 var request = new LoanRequestBuilder(args).Build();
 
-                var rawDataProvider = new LenderRawRateProviderFromFile(request.FilePath);
-
+                // Step 2: Calculate interest
                 var quote = await new LoanQuoteProcessor(
-                    new LoanRequestValidator(),
-                    new CsvLenderRateDeserializer(rawDataProvider),
+                    new LoanRequestedAmountValidator(),
+                    new CsvLenderRateDeserializer(new LenderRawRateProviderFromFile(request.FilePath)),
                     new CompoundInterestCalculator(),
                     request.LoanAmount)
                     .Process();
 
+                // Step 3: Display results
                 DisplayQuote(quote);
             }
             catch (ValidationException ex)
@@ -48,7 +49,6 @@ namespace Quote
             Console.WriteLine($"Rate: {quote.Rate.DisplayPercentage()}");
             Console.WriteLine($"Monthly repayment: {quote.MonthlyRepayment.ToString("c")}");
             Console.WriteLine($"Total repayment:  {quote.Total.ToString("c")}");
-
         }
     }
 }

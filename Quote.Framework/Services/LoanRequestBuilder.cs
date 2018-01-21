@@ -25,11 +25,11 @@ namespace Quote.Framework
         private void Validate()
         {
             if (Args == null || Args.Length != 2)
-                throw new ValidationException("Please provide 2 arguments.");
+                throw new ValidationException("Two arguments are needed to get the quote. First should be lender data CSV file path and second should be Loan Amount.");
 
             var loanAMount = Args[LoanArgumentIndex].TryParseAs<int>();
             if (loanAMount == null)
-                throw new ValidationException("The provided loan amount is not in decimal format.");
+                throw new ValidationException("The provided loan amount should be a number.");
 
         }
     }

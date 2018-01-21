@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quote.Common;
 using Quote.Framework;
+using Tests.Common;
 
 namespace UnitTests
 {
@@ -9,7 +10,7 @@ namespace UnitTests
     public class QuoteRequestBuilderTests
     {
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Two arguments are needed to get the quote. First should be lender data CSV file path and second should be Loan Amount.")]
         public void When_Argument_Is_Empty()
         {
             var args = new string[] { };
@@ -17,7 +18,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Two arguments are needed to get the quote. First should be lender data CSV file path and second should be Loan Amount.")]
         public void When_Argument_Is_Null()
         {
             var quoteRequest = new LoanRequestBuilder(null).Build();

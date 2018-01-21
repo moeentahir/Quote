@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tests.Common;
 
 namespace UnitTests
 {
@@ -14,7 +15,7 @@ namespace UnitTests
     public class CsvLenderDataReaderTests
     {
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "No header record was found.")]
         public async Task When_File_Is_Empty()
         {
             var dataReaderMock = new Mock<ILenderRawRateProvider>();
@@ -25,7 +26,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Cannot find any lender in the file.")]
         public async Task When_Only_Header_Is_Provided()
         {
             var dataReaderMock = new Mock<ILenderRawRateProvider>();
@@ -36,7 +37,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Cannot find any lender in the file.")]
         [DataRow("Lenders,Rate,Available")]
         [DataRow("abc")]
         [DataRow("abc,xyz,123")]
@@ -50,7 +51,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "CSV File headers are incorrect. Please make sure you have three headers with names 'Lender', 'Rate' and 'Available'.")]
         public async Task Incorrect_Header_With_Data()
         {
             var expected = 0;
@@ -83,7 +84,7 @@ Bob,0.075,640";
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "The data 'asd' you specified in CSV file is not correct type.")]
         public async Task Incorrect_Rate_Should_Throw_Exception()
         {
             var data = @"Lender,Rate,Available

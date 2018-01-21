@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Quote.Common;
 using Quote.Framework;
+using Tests.Common;
 
 namespace UnitTests
 {
@@ -17,7 +15,7 @@ namespace UnitTests
         public void Initialize()
         {
             // Setup a validator that always return true
-            var validatorMock = new Mock<ILoanRequestValidator>();
+            var validatorMock = new Mock<ILoanRequestedAmountValidator>();
             ValidatorThatReturnsTrue = validatorMock.Object;
 
             var lenderRateDeserializerMock = new Mock<ILenderRateDeserializer>();
@@ -35,7 +33,7 @@ namespace UnitTests
 
         }
 
-        public ILoanRequestValidator ValidatorThatReturnsTrue { get; set; }
+        public ILoanRequestedAmountValidator ValidatorThatReturnsTrue { get; set; }
 
         public ILenderRateDeserializer LenderRatesSerializerFromZopaExample { get; set; }
 
@@ -58,7 +56,7 @@ namespace UnitTests
                 loanAmount
                  );
 
-            var breakDown = processor.CreateBreakDown(LenderRatesFromZopaExample);
+            var breakDown = processor.CreateLoanAmountBreakDown(LenderRatesFromZopaExample);
 
             var actual = breakDown.Count();
 
@@ -67,7 +65,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationException))]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Cannot give quote for the loan amount you requested. The maximum loan you can request is 2300.")]
         public void Break_Down_More_Than_All_Available_Amount_SHould_Throw_Exception()
         {
 
@@ -81,10 +79,9 @@ namespace UnitTests
                 2500
                  );
 
-            var breakDown = processor.CreateBreakDown(LenderRatesFromZopaExample);
+            var breakDown = processor.CreateLoanAmountBreakDown(LenderRatesFromZopaExample);
 
         }
-
 
         [TestMethod]
         public void Weighte_Average_Of_Two_Numbers()
@@ -100,9 +97,9 @@ namespace UnitTests
                 1000
                  );
 
-            var breakDown = processor.CalculateWeightedAverage(new List<LoanBreakDown> {
-                new LoanBreakDown{ Amount=480, Rate= 0.069M },
-                new LoanBreakDown{ Amount=520, Rate= 0.071M }
+            var breakDown = processor.CalculateWeightedAverage(new List<LoanAmountBreakDown> {
+                new LoanAmountBreakDown{ Amount=480, Rate= 0.069M },
+                new LoanAmountBreakDown{ Amount=520, Rate= 0.071M }
             });
 
             var actual = breakDown;
@@ -112,7 +109,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void Weighte_Average_Same_Weight_Should_Calculate_Average_Exact_Hald()
+        public void Weighte_Average_Same_Weight_Should_Calculate_Average_Exact_Half()
         {
 
             var lenderRateDeserializerMock = new Mock<ILenderRateDeserializer>();
@@ -125,9 +122,9 @@ namespace UnitTests
                 1000
                  );
 
-            var breakDown = processor.CalculateWeightedAverage(new List<LoanBreakDown> {
-                new LoanBreakDown{ Amount=500, Rate= 0.09M },
-                new LoanBreakDown{ Amount=500, Rate= 0.07M }
+            var breakDown = processor.CalculateWeightedAverage(new List<LoanAmountBreakDown> {
+                new LoanAmountBreakDown{ Amount=500, Rate= 0.09M },
+                new LoanAmountBreakDown{ Amount=500, Rate= 0.07M }
             });
 
             var actual = breakDown;
@@ -135,7 +132,5 @@ namespace UnitTests
 
             Assert.AreEqual(expected, actual);
         }
-
-
     }
 }

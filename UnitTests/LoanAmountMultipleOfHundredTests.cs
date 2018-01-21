@@ -9,15 +9,24 @@ namespace UnitTests
     public class LoanAmountMultipleOfHundredTests
     {
         [TestMethod]
-        [DataRow("101.0", false)]
-        [DataRow("100.1", false)]
-        [DataRow("100.0", true)]
-        [DataRow("1000.0", true)]
-        public void Amount_Should_Be_Multiple_Of_Hundred(string amount, bool expected)
+        [DataRow(100)]
+        [DataRow(2000)]
+        [DataRow(3000)]
+        [DataRow(4000)]
+        [DataRow(1200)]
+        [DataRow(1600)]
+        public void Amount_Should_Be_Multiple_Of_Hundred(int amount)
         {
-            var actual = new LoanRequestMultipleOfHundredRule().IsValid(decimal.Parse(amount));
+            new LoanRequestMultipleOfHundredRule().Validate(amount);
+        }
 
-            Assert.AreEqual(expected, actual);
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        [DataRow(101)]
+        [DataRow(1020)]
+        public void Not_Multiple_Of_Hundreds_SHould_Throw_Exception(int amount)
+        {
+            new LoanRequestMultipleOfHundredRule().Validate(amount);
         }
     }
 }

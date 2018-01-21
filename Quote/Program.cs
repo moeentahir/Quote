@@ -46,8 +46,8 @@ namespace Quote
         {
             Console.WriteLine($"Requested amount: {quote.LoanRequested.ToString("c")}");
             Console.WriteLine($"Rate: {quote.Rate.DisplayPercentage()}");
-            Console.WriteLine($"Monthly repayment: {quote.MonthlyRepayment.RoundTo(2).ToString("c")}");
-            Console.WriteLine($"Total repayment:  {quote.Total.RoundTo(2).ToString("c")}");
+            Console.WriteLine($"Monthly repayment: {quote.MonthlyRepayment.ToString("c")}");
+            Console.WriteLine($"Total repayment:  {quote.Total.ToString("c")}");
 
         }
     }

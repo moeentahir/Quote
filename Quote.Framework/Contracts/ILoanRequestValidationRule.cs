@@ -8,6 +8,6 @@ namespace Quote.Framework
 {
     public interface ILoanRequestValidationRule
     {
-        bool IsValid(decimal requestedAmount);
+        void Validate(int requestedAmount);
     }
 }

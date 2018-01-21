@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quote.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,11 @@ namespace Quote.Framework
 {
     public class LoanRequestMultipleOfHundredRule : ILoanRequestValidationRule
     {
-        public bool IsValid(decimal requestedAmount) => (requestedAmount % 100M) == 0;
+        public void Validate(int requestedAmount)
+        {
+
+            if ((requestedAmount % 100M) != 0)
+                throw new ValidationException("Loan amound should be multiple of 100.");
+        }
     }
 }

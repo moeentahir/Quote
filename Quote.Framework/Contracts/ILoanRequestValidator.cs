@@ -10,6 +10,6 @@ namespace Quote.Framework
     {
         List<ILoanRequestValidationRule> Rules { get; set; }
 
-        bool Validate(decimal requestedAmount);
+        void Validate(int requestedAmount);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quote.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Quote.Framework
 
             var lastPart= (decimal)Math.Pow((double)middlePart, power);
 
-            return parameters.PrincipalAmount * lastPart;
+            return (parameters.PrincipalAmount * lastPart).RoundTo(2); // Client requirement to round to 2 decimal places
         }
     }
 }

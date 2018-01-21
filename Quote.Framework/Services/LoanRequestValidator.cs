@@ -20,6 +20,13 @@ namespace Quote.Framework
             };
         }
 
-        public bool Validate(decimal requestedAmount) => Rules.All(r => r.IsValid(requestedAmount));
+        public void Validate(int requestedAmount)
+        {
+            foreach (var rule in Rules)
+            {
+
+                rule.Validate(requestedAmount);
+            }
+        }
     }
 }

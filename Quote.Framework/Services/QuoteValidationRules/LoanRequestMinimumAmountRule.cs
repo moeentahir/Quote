@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quote.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,10 @@ namespace Quote.Framework
 {
     public class LoanRequestMinimumAmountRule : ILoanRequestValidationRule
     {
-        public bool IsValid(decimal requestedAmount) => requestedAmount >= 1000;
+        public void Validate(int requestedAmount) {
+
+            if (requestedAmount < 1000)
+                throw new ValidationException("Loan amound should be greater than or equal to £1,000.");
+        }
     }
 }

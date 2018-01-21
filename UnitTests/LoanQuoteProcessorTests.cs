@@ -18,11 +18,9 @@ namespace UnitTests
         {
             // Setup a validator that always return true
             var validatorMock = new Mock<ILoanRequestValidator>();
-            validatorMock.Setup(v => v.Validate(0)).Returns(true);
             ValidatorThatReturnsTrue = validatorMock.Object;
 
             var lenderRateDeserializerMock = new Mock<ILenderRateDeserializer>();
-            validatorMock.Setup(v => v.Validate(0)).Returns(true);
             ValidatorThatReturnsTrue = validatorMock.Object;
 
             LenderRatesFromZopaExample = new List<LenderRate>() {
@@ -108,7 +106,7 @@ namespace UnitTests
             });
 
             var actual = breakDown;
-            var expected = .07004M;
+            var expected = .07M;
 
             Assert.AreEqual(expected, actual);
         }

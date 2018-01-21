@@ -50,7 +50,7 @@ namespace Quote.Framework
             {
                 LoanRequested = LoanRequested,
                 Rate = weightedAverageRate,
-                MonthlyRepayment = totalPayable / NumberOfMonthsLoanFor,
+                MonthlyRepayment = (totalPayable / NumberOfMonthsLoanFor).RoundTo(2),
                 Total = totalPayable
             };
         }
@@ -60,7 +60,7 @@ namespace Quote.Framework
             var weightedSum = breakdown.Sum(b => b.Amount * b.Rate);
             var amountSum = breakdown.Sum(b => b.Amount);
 
-            return weightedSum / amountSum;
+            return (weightedSum / amountSum).RoundTo(3);// client requirement to round 1 decimal when rate represented as percentage e.g 7.5%
         }
 
         /// <summary>

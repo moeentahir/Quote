@@ -21,8 +21,13 @@ namespace Quote.Common
                 decimal result; if (decimal.TryParse(@this, out result)) return (T)(object)result; else return null;
             }
 
+            if (typeof(T) == typeof(int))
+            {
+                int result; if (int.TryParse(@this, out result)) return (T)(object)result; else return null;
+            }
+
             //TODO: Add more types if needed
-            
+
             try { return (T)Convert.ChangeType(@this, typeof(T)); }
             catch { return null; }
         }
@@ -32,5 +37,16 @@ namespace Quote.Common
         /// </summary>
         /// <returns>True if object is null or empty</returns>
         public static bool IsEmpty(this string @this) => string.IsNullOrEmpty(@this);
+
+        public static decimal RoundTo(this decimal value, int digits)
+        {
+            return decimal.Round(value, digits, MidpointRounding.AwayFromZero);
+        }
+
+
+        public static string DisplayPercentage(this decimal @this)
+        {
+            return $"{(@this * 100).RoundTo(1)} %";
+        }
     }
 }

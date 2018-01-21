@@ -12,12 +12,25 @@ namespace Quote
     {
         static void Main(string[] args)
         {
+            MainAsync(args).Wait();
+        }
+
+        static async Task MainAsync(string[] args)
+        {
             try
             {
                 var request = new LoanRequestBuilder(args).Build();
 
+                var rawDataProvider = new LenderRawRateProviderFromFile(request.FilePath);
 
+                var quote = await new LoanQuoteProcessor(
+                    new LoanRequestValidator(),
+                    new CsvLenderRateDeserializer(rawDataProvider),
+                    new CompoundInterestCalculator(),
+                    request.LoanAmount)
+                    .Process();
 
+                DisplayQuote(quote);
             }
             catch (ValidationException ex)
             {
@@ -27,6 +40,15 @@ namespace Quote
             {
                 Console.WriteLine($"An error occured while processing your request. Error: {ex.Message}");
             }
+        }
+
+        private static void DisplayQuote(LoanQuote quote)
+        {
+            Console.WriteLine($"Requested amount: {quote.LoanRequested.ToString("c")}");
+            Console.WriteLine($"Rate: {quote.Rate.DisplayPercentage()}");
+            Console.WriteLine($"Monthly repayment: {quote.MonthlyRepayment.RoundTo(2).ToString("c")}");
+            Console.WriteLine($"Total repayment:  {quote.Total.RoundTo(2).ToString("c")}");
+
         }
     }
 }

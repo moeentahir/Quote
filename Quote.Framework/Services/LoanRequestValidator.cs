@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quote.Framework.Services
+namespace Quote.Framework
 {
     public class LoanRequestValidator : ILoanRequestValidator
     {
@@ -14,13 +14,12 @@ namespace Quote.Framework.Services
         {
             Rules = new List<ILoanRequestValidationRule>
             {
-                new LoanRequestValidFileRule(),
                 new LoanRequestMinimumAmountRule(),
                 new LoanRequestMaximumAmountRule(),
                 new LoanRequestMultipleOfHundredRule()
             };
         }
 
-        public bool Validate(LoanRequest request) => Rules.All(r => r.IsValid(request));
+        public bool Validate(decimal requestedAmount) => Rules.All(r => r.IsValid(requestedAmount));
     }
 }

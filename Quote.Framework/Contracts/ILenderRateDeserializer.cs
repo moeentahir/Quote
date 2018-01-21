@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Quote.Framework
 {
-    public interface ILoanRequestValidationRule
+    public interface ILenderRateDeserializer
     {
-        bool IsValid(decimal requestedAmount);
+        Task<IEnumerable<LenderRate>> Deserialize();
     }
 }

@@ -8,6 +8,6 @@ namespace Quote.Framework
 {
     public class LoanRequestMultipleOfHundredRule : ILoanRequestValidationRule
     {
-        public bool IsValid(LoanRequest request) => (request.LoanAmount % 100M) == 0;
+        public bool IsValid(decimal requestedAmount) => (requestedAmount % 100M) == 0;
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Quote.Framework
 {
-    public interface ILoanRequestValidationRule
+    public interface IInterestCalculator
     {
-        bool IsValid(decimal requestedAmount);
+        decimal Calculate(InterestCalculationParameters parameters);
     }
 }

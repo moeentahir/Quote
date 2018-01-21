@@ -4,6 +4,6 @@
     {
         public string  FilePath { get; set; }
 
-        public decimal LoanAmount { get; set; }
+        public int LoanAmount { get; set; }
     }
 }

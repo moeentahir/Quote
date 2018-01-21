@@ -24,5 +24,14 @@ namespace UnitTests
         }
 
 
+        [TestMethod]
+        public void When_Proper_Arguments_Are_Passed()
+        {
+            var quoteRequest = new LoanRequestBuilder(new string[] { "Data.csv", "1000" }).Build();
+
+            Assert.AreEqual(quoteRequest.FilePath, "Data.csv");
+            Assert.AreEqual(quoteRequest.LoanAmount, 1000M);
+        }
+
     }
 }

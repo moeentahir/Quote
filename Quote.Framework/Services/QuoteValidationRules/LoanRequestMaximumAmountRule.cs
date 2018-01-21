@@ -9,6 +9,6 @@ namespace Quote.Framework
 {
     public class LoanRequestMaximumAmountRule : ILoanRequestValidationRule
     {
-        public bool IsValid(LoanRequest request) => request.LoanAmount <= 15000;
+        public bool IsValid(decimal requestedAmount) => requestedAmount <= 15000;
     }
 }

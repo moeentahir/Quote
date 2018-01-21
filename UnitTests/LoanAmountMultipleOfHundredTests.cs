@@ -15,10 +15,7 @@ namespace UnitTests
         [DataRow("1000.0", true)]
         public void Amount_Should_Be_Multiple_Of_Hundred(string amount, bool expected)
         {
-            var actual = new LoanRequestMultipleOfHundredRule().IsValid(new LoanRequest
-            {
-                LoanAmount = decimal.Parse(amount)
-            });
+            var actual = new LoanRequestMultipleOfHundredRule().IsValid(decimal.Parse(amount));
 
             Assert.AreEqual(expected, actual);
         }

@@ -8,7 +8,7 @@ namespace Quote.Framework
         {
 
             if ((requestedAmount % 100M) != 0)
-                throw new ValidationException("Loan amound should be multiple of 100.");
+                throw new ValidationException("Loan amount should be multiple of 100.");
         }
     }
 }

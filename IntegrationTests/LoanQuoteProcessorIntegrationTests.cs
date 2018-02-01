@@ -14,7 +14,7 @@ namespace IntegrationTests
         [DataRow(0)]
         [DataRow(800)]
         [DataRow(-1000)]
-        [ExpectExceptionWithMessage(typeof(ValidationException), "Loan amound should be greater than or equal to £1,000.")]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Loan amount should be greater than or equal to £1,000.")]
         public async Task Loan_Request_Below_Lower_Limit_Should_Throw_Exception(int loanRequest)
         {
             var args = new[] { "LenderData.CSV", loanRequest.ToString() };
@@ -34,7 +34,7 @@ namespace IntegrationTests
         [DataRow(15100)]
         [DataRow(16000)]
         [DataRow(20000)]
-        [ExpectExceptionWithMessage(typeof(ValidationException), "Loan amound should be less than or equal to £15,000.")]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Loan amount should be less than or equal to £15,000.")]
         public async Task Loan_Request_Above_Upper_Limit_Should_Throw_Exception(int loanRequest)
         {
             var args = new[] { "LenderData.CSV", loanRequest.ToString() };

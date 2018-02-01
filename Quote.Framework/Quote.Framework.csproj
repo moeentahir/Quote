@@ -60,8 +60,8 @@
     <Compile Include="Services\LoanQuoteProcessor.cs" />
     <Compile Include="Services\LoanRequestBuilder.cs" />
     <Compile Include="Services\LoanRequestedAmountValidator.cs" />
-    <Compile Include="Services\QuoteValidationRules\LoanRequestedAmoundMaximumAmountRule.cs" />
-    <Compile Include="Services\QuoteValidationRules\LoanRequestedAmoundMinimumAmountRule.cs" />
+    <Compile Include="Services\QuoteValidationRules\LoanRequestedAmountMaximumAmountRule.cs" />
+    <Compile Include="Services\QuoteValidationRules\LoanRequestedAmountMinimumAmountRule.cs" />
     <Compile Include="Services\QuoteValidationRules\LoanRequestedAmountMultipleOfHundredRule.cs" />
   </ItemGroup>
   <ItemGroup>

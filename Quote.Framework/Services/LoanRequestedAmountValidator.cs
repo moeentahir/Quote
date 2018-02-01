@@ -14,8 +14,8 @@ namespace Quote.Framework
         {
             Rules = new List<ILoanRequestedAmountValidationRule>
             {
-                new LoanRequestedAmoundMinimumAmountRule(),
-                new LoanRequestedAmoundMaximumAmountRule(),
+                new LoanRequestedAmountMinimumAmountRule(),
+                new LoanRequestedAmountMaximumAmountRule(),
                 new LoanRequestedAmountMultipleOfHundredRule()
             };
         }

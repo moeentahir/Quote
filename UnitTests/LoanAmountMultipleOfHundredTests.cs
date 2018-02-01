@@ -22,7 +22,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        [ExpectExceptionWithMessage(typeof(ValidationException), "Loan amound should be multiple of 100.")]
+        [ExpectExceptionWithMessage(typeof(ValidationException), "Loan amount should be multiple of 100.")]
         [DataRow(101)]
         [DataRow(1020)]
         public void Not_Multiple_Of_Hundreds_SHould_Throw_Exception(int amount)
